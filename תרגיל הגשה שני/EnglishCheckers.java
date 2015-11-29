@@ -54,6 +54,7 @@ public class EnglishCheckers {
 		changeDiscPosition(board, player, fromRow, fromCol, toRow, toCol);
 	}
 
+	// Changing a disc's position to the new one and checking for a new queen
 	public static void changeDiscPosition(int[][] board, int player, int fromRow, int fromCol, int toRow, int toCol) {
 
 		board[toRow][toCol] = board[fromRow][fromCol];
@@ -182,7 +183,7 @@ public class EnglishCheckers {
 	public static boolean gameOver(int[][] board, int player) {
 		boolean ans = false;
 
-		if (!hasValidMoves(board, player)) {
+		if (!hasValidMoves(board, player) || !hasValidMoves(board, player * (-1))) {
 			ans = true;
 		}
 
@@ -251,24 +252,50 @@ public class EnglishCheckers {
 	// returns the index of the best defensive move of of validMoved array
 	public static int getBestDefensiveMove(int[][] board, int[][] validMoves, int player) {
 
-		int minimizer = getAllBasicJumps(board, player * -1).length;
+		int[][] zeooPossible = playMove(board, player, validMoves[0][0], validMoves[0][1], validMoves[0][2],
+				validMoves[0][3]);
 
-		// if no move will reduce the number of possible opponent jumps, a
-		// random move will be chosen
-		int moveIndex = (int) (Math.random() * (validMoves.length - 1));
+		int minimizer = getAllBasicJumps(zeooPossible, player * -1).length;
 
+		int[] equalsMove = new int[validMoves.length];
+		initial1DArray(equalsMove, -1); // Initialing equals moves array
+		int equalsMoveIndex = -1;
+
+		// for the first index (0), the loop will go to 'else if' and insert the
+		// first option to the array
 		for (int i = 0; i < validMoves.length; i++) {
 
+			// "making" the move
 			int[][] possible = playMove(board, player, validMoves[i][0], validMoves[i][1], validMoves[i][2],
 					validMoves[i][3]);
 
+			// Calculating the jumps options for opponent after move was done
 			int opponentCurrentJumpOptions = getAllBasicJumps(possible, player * -1).length;
 
-			if (opponentCurrentJumpOptions <= minimizer) {
+			if (opponentCurrentJumpOptions < minimizer) {
 				minimizer = opponentCurrentJumpOptions;
-				moveIndex = i;
+
+				// when finding new minimum move, we'll reset the equals move
+				// array, and insert the new minimizer there
+				initial1DArray(equalsMove, -1);
+
+				equalsMoveIndex = 0;
+				equalsMove[equalsMoveIndex] = i;
+
+			} else if (opponentCurrentJumpOptions == minimizer) { // catching
+																	// all
+																	// equals
+																	// moves
+				equalsMoveIndex = equalsMoveIndex + 1;
+				equalsMove[equalsMoveIndex] = i;
 			}
 		}
+
+		// choosing from all equals moves, one randomly.
+		// note: if there is only one move, it will be chosen
+		int equalsMoveRandomIndex = (int) (Math.random() * equalsMoveIndex);
+
+		int moveIndex = equalsMove[equalsMoveRandomIndex];
 		return moveIndex;
 	}
 
@@ -282,12 +309,31 @@ public class EnglishCheckers {
 
 		for (int i = 0; i < validMoves.length; i++) {
 
-			int currentDistance = getMinDistanceFromSide(validMoves[i][3]);
+			// TODO: not sure if that was asked
+			int currentDistance = getMinDistanceFromSide(validMoves[i][1]); // getting
+																			// current
+																			// location's
+																			// distance
+																			// from
+																			// sides
+			int newDistance = getMinDistanceFromSide(validMoves[i][3]); // getting
+																		// new
+																		// location's
+																		// distance
+																		// from
+																		// sides
 
-			if (currentDistance < miniDistance) {
-				miniDistance = currentDistance;
-				moveIndex = i;
+			if (newDistance < currentDistance) {// if new location's distance
+												// from sides id smaller than
+												// current location's , checking
+												// if it is the smaller of all
+												// distance
+				if (currentDistance < miniDistance) {
+					miniDistance = currentDistance;
+					moveIndex = i;
+				}
 			}
+
 		}
 		return moveIndex;
 
@@ -381,6 +427,8 @@ public class EnglishCheckers {
 											// disc
 		int movesCount = 0;
 
+		// Checking for all jumps options is valid. If they are, adding them to
+		// the array of possible jumps
 		if (isBasicJumpValid(board, player, row, col, row + 2, col + 2)) {
 			insertMoveInRow(tempMoves, movesCount, row, col, row + 2, col + 2);
 			movesCount = movesCount + 1;
@@ -448,6 +496,13 @@ public class EnglishCheckers {
 		}
 
 		return ans;
+	}
+
+	// initial 1D array to the value given
+	public static void initial1DArray(int[] arr, int value) {
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = value;
+		}
 	}
 
 	public static void insertMoveInRow(int[][] moves, int atRow, int fromRow, int fromCol, int toRow, int toCol) {
@@ -580,6 +635,7 @@ public class EnglishCheckers {
 	}
 
 	// Assumes coordinates are valid
+	// Checks if the step is in the length of 2
 	public static boolean isJumpStep(int fromRow, int fromCol, int toRow, int toCol) {
 		boolean basic = true;
 		if (Math.abs(fromRow - toRow) != 2) {
@@ -624,6 +680,7 @@ public class EnglishCheckers {
 		return true;
 	}
 
+	// makes sure the player keeps eating until there are no more discs to eat
 	public static int[][] keepEating(int[][] board, int player, int row, int col) {
 
 		int[][] newBoard = copyBoard(board);
@@ -682,6 +739,7 @@ public class EnglishCheckers {
 		showBoard(board);
 	}
 
+	// merging 2 2D arrays into one. assuming the second dimension is equals
 	public static int[][] merge2DArrays(int[][] arr1, int[][] arr2) {
 
 		if (arr1.length == 0) {
@@ -728,8 +786,8 @@ public class EnglishCheckers {
 		return positions;
 	}
 
+	// Task 11
 	public static int[][] playMove(int[][] board, int player, int fromRow, int fromCol, int toRow, int toCol) {
-		// Task 11
 
 		int[][] newBoard = copyBoard(board);
 
@@ -818,7 +876,7 @@ public class EnglishCheckers {
 		grid.showBoard(board);
 	}
 
-	// copies data from 2D array, to new one
+	// copies data from 2D array, to new array in a specific
 	public static int[][] shrink2DArray(int[][] source, int newRowSize, int newColSize) {
 
 		int[][] dest = new int[newRowSize][newColSize];
