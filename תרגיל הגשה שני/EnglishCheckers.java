@@ -183,7 +183,7 @@ public class EnglishCheckers {
 	public static boolean gameOver(int[][] board, int player) {
 		boolean ans = false;
 
-		if (!hasValidMoves(board, player) || !hasValidMoves(board, player * (-1))) {
+		if (!hasValidMoves(board, player)) {
 			ans = true;
 		}
 
@@ -252,10 +252,10 @@ public class EnglishCheckers {
 	// returns the index of the best defensive move of of validMoved array
 	public static int getBestDefensiveMove(int[][] board, int[][] validMoves, int player) {
 
-		int[][] zeooPossible = playMove(board, player, validMoves[0][0], validMoves[0][1], validMoves[0][2],
+		int[][] zeroPossible = playMove(board, player, validMoves[0][0], validMoves[0][1], validMoves[0][2],
 				validMoves[0][3]);
 
-		int minimizer = getAllBasicJumps(zeooPossible, player * -1).length;
+		int minimizer = getAllBasicJumps(zeroPossible, player * -1).length;
 
 		int[] equalsMove = new int[validMoves.length];
 		initial1DArray(equalsMove, -1); // Initialing equals moves array
@@ -309,32 +309,14 @@ public class EnglishCheckers {
 
 		for (int i = 0; i < validMoves.length; i++) {
 
-			// TODO: not sure if that was asked
-			int currentDistance = getMinDistanceFromSide(validMoves[i][1]); // getting
-																			// current
-																			// location's
-																			// distance
-																			// from
-																			// sides
-			int newDistance = getMinDistanceFromSide(validMoves[i][3]); // getting
-																		// new
-																		// location's
-																		// distance
-																		// from
-																		// sides
+			int currentDistance = getMinDistanceFromSide(validMoves[i][3]);
 
-			if (newDistance < currentDistance) {// if new location's distance
-												// from sides id smaller than
-												// current location's , checking
-												// if it is the smaller of all
-												// distance
-				if (currentDistance < miniDistance) {
-					miniDistance = currentDistance;
-					moveIndex = i;
-				}
+			if (currentDistance < miniDistance) {
+				miniDistance = currentDistance;
+				moveIndex = i;
 			}
-
 		}
+
 		return moveIndex;
 
 	}
