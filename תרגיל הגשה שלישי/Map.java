@@ -30,6 +30,35 @@ public class Map {
 		this.map = map;
 	}
 
+	public static void main(String[] args) {
+
+		char[][] map = new char[][] { new char[] { 'b', 'b', 'b', 'r', 'b', 'g' },
+				new char[] { 'g', 'g', 'r', 'y', 'b', 'g' }, new char[] { 'g', 'r', 'r', 'b', 'b', 'g' },
+				new char[] { 'g', 'g', 'p', 'p', 'y', 'y' }, new char[] { 'g', 'g', 'p', 'p', 'y', 'y' },
+				new char[] { 'p', 'p', 'p', 'p', 'p', 'y' }, };
+
+		Map m = new Map(map);
+		printMap(m);
+
+		m.fill(new Point(2, 3), '*');
+
+		printMap(m);
+
+	}
+
+	public static void printMap(Map map) {
+		char[][] m = map.getMap();
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[i].length; j++) {
+
+				System.out.print("[" + m[i][j] + "] ");
+			}
+			System.out.println();
+		}
+		System.out.println("----------------");
+
+	}
+
 	// Add a description in your own words.
 	public boolean equals(Map map) {
 
@@ -88,8 +117,18 @@ public class Map {
 
 					Point newPoint = new Point(newI, newJ);
 
-					if (p.equals(newPoint) | legalNeighbor(p, newPoint)) {
-						getAllArea(newPoint, mapToPiant);
+					// not summon if point is already painted
+					if (!mapToPiant[newPoint.getX()][newPoint.getY()]) {
+
+						if (!p.equals(newPoint) && legalNeighbor(p, newPoint)) {
+
+							// getAllArea is summoned for point that:
+							// 1) is not equals current point
+							// 2) is not already painted
+							// 3) is legal neighbor of current point
+							getAllArea(newPoint, mapToPiant);
+
+						}
 					}
 
 				}
@@ -107,7 +146,7 @@ public class Map {
 			return false;
 		}
 
-		if ((i > this.map.length) || (j > this.map[0].length)) {
+		if ((i >= this.map.length) || (j >= this.map[0].length)) {
 			return false;
 		}
 
@@ -131,12 +170,11 @@ public class Map {
 			return false;
 		}
 
-		// Neighbor
-		if (Math.abs(p1.getX() - p2.getX()) != 1) {
+		if ((Math.abs(p1.getX() - p2.getX()) > 1)) {
 			return false;
 		}
 
-		if (Math.abs(p1.getY() - p2.getY()) != 1) {
+		if ((Math.abs(p1.getY() - p2.getY()) > 1)) {
 			return false;
 		}
 
