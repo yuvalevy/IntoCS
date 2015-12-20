@@ -5,7 +5,14 @@ public class Map {
 
 	private char[][] map;
 
-	// Add a description in your own words.
+	/**
+	 * Creates new Map instance
+	 *
+	 * All letters are switched to lower case. Also if one of the chars in the
+	 * given char[][] is not English alfabithic, it will be switched with 'z'
+	 *
+	 * @param map
+	 */
 	public Map(char[][] map) {
 
 		for (int i = 0; i < map.length; i++) {
@@ -30,36 +37,16 @@ public class Map {
 		this.map = map;
 	}
 
-	public static void main(String[] args) {
-
-		char[][] map = new char[][] { new char[] { 'b', 'b', 'b', 'r', 'b', 'g' },
-				new char[] { 'g', 'g', 'r', 'y', 'b', 'g' }, new char[] { 'g', 'r', 'r', 'b', 'b', 'g' },
-				new char[] { 'g', 'g', 'p', 'p', 'y', 'y' }, new char[] { 'g', 'g', 'p', 'p', 'y', 'y' },
-				new char[] { 'p', 'p', 'p', 'p', 'p', 'y' }, };
-
-		Map m = new Map(map);
-		printMap(m);
-
-		m.fill(new Point(2, 3), '*');
-
-		printMap(m);
-
-	}
-
-	public static void printMap(Map map) {
-		char[][] m = map.getMap();
-		for (int i = 0; i < m.length; i++) {
-			for (int j = 0; j < m[i].length; j++) {
-
-				System.out.print("[" + m[i][j] + "] ");
-			}
-			System.out.println();
-		}
-		System.out.println("----------------");
-
-	}
-
-	// Add a description in your own words.
+	/**
+	 * Checks if the given map is equals current map
+	 *
+	 * Equals means: maps' lengths are the same, and all chars values in one
+	 * array is equals to the other one
+	 *
+	 * @param map
+	 *            Map to compare
+	 * @return True, if maps are equals, false otherwise
+	 */
 	public boolean equals(Map map) {
 
 		// in order not to call map.getMap() many times
@@ -85,7 +72,14 @@ public class Map {
 		return true;
 	}
 
-	// Add a description in your own words.
+	/**
+	 * Fills the point, and the point's legal neighbors with the given color
+	 *
+	 * @param p
+	 *            point to paint
+	 * @param color
+	 *            color to paint
+	 */
 	public void fill(Point p, char color) {
 
 		boolean[][] mapToPiant = new boolean[this.map.length][this.map.length];
@@ -101,6 +95,14 @@ public class Map {
 
 	}
 
+	/**
+	 * Fills the boolean[][] with 'true' values, where all point's legal
+	 * neighbors are, and where all legal neighbors' legal neighbors are.
+	 *
+	 * @param p
+	 *            Starting point
+	 * @param mapToPiant
+	 */
 	public void getAllArea(Point p, boolean[][] mapToPiant) {
 
 		mapToPiant[p.getX()][p.getY()] = true;
@@ -136,11 +138,23 @@ public class Map {
 		}
 	}
 
-	// Add a description in your own words.
+	/**
+	 *
+	 * @return the char[][] of the map
+	 */
 	public char[][] getMap() {
 		return this.map;
 	}
 
+	/**
+	 * Checks if given coordinate is on the map
+	 *
+	 * @param i
+	 *            as 'x'
+	 * @param j
+	 *            as 'y'
+	 * @return True if coordinate is on the map, false otherwise
+	 */
 	public boolean isInMap(int i, int j) {
 		if ((i < 0) || (j < 0)) {
 			return false;
@@ -153,11 +167,27 @@ public class Map {
 		return true;
 	}
 
+	/**
+	 * Checks if given point is on the map
+	 *
+	 * @param p
+	 *            point to be checked
+	 * @return True if point is on the map, false otherwise
+	 */
 	public boolean isInMap(Point p) {
 		return isInMap(p.getX(), p.getY());
 	}
 
-	// Add a description in your own words.
+	/**
+	 * Checks if two points are defined 'legal neighbor' in current map
+	 *
+	 * legalNeighbor defined: 1) Both points are in map 2) Points are not the
+	 * same 3) They are
+	 *
+	 * @param p1
+	 * @param p2
+	 * @return
+	 */
 	public boolean legalNeighbor(Point p1, Point p2) {
 
 		// On Map
