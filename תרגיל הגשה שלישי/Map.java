@@ -1,6 +1,6 @@
-/*
-* Add a description in your own words.
-*/
+/**
+ * Describes a 2D map that contains colors
+ */
 public class Map {
 
 	private char[][] map;
@@ -182,11 +182,13 @@ public class Map {
 	 * Checks if two points are defined 'legal neighbor' in current map
 	 *
 	 * legalNeighbor defined: 1) Both points are in map 2) Points are not the
-	 * same 3) They are
+	 * same 3) Points distance in 'x' axis is 1 or 0 4) Points distance in 'y'
+	 * axis is 1 or 0 5) Points' color on map is the same
 	 *
 	 * @param p1
 	 * @param p2
-	 * @return
+	 * @return If two point are legalNeighbor returns true, otherwise return
+	 *         false
 	 */
 	public boolean legalNeighbor(Point p1, Point p2) {
 
@@ -217,7 +219,10 @@ public class Map {
 
 	}
 
-	// Add a description in your own words.
+	/**
+	 *
+	 * @return The number of color on the map
+	 */
 	public int numOfColors() {
 		String colors = "";
 		int counter = 0;
@@ -236,7 +241,12 @@ public class Map {
 
 	}
 
-	// Add a description in your own words.
+	/**
+	 *
+	 * @param p
+	 * @return The number of the point's neighbor's colors including point
+	 *         himself
+	 */
 	public int numOfColors(Point p) {
 
 		if (!isInMap(p)) {

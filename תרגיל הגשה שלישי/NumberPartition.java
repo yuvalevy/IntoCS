@@ -31,16 +31,28 @@ public class NumberPartition {
 	 * arguments are null / "incorrect"
 	 */
 
-	// function prints all numberPartions strings, using recursive function to
-	// check for all options
+	/**
+	 * Function prints all numberPartions strings, using recursive function to
+	 * check for all options
+	 *
+	 * @param n
+	 *            the last element in the numbers' series
+	 */
 	public static void numberPartition(int n) {
 		if (n > 0) {
 			numberPartition(n, "");
 		}
 	}
 
-	// function goes through all the options to build N length 0,1 strings and
-	// prints them if they're partitions
+	/**
+	 * Function goes through all the options to build N length 0,1 strings and
+	 * prints them if they're partitions
+	 *
+	 * @param n
+	 *            the last element in the numbers' series
+	 * @param s
+	 *            01 String
+	 */
 	private static void numberPartition(int n, String s) {
 		if ((n % 2) == 0) { // Test can't pass for an odd length
 			if (n == s.length()) {
