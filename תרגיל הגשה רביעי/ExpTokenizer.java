@@ -60,6 +60,8 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 			resultToken = new SubtractOp();
 		} else if (token.equals("/")) {
 			resultToken = new DivideOp();
+		} else if (token.equals("^")) {
+			resultToken = new PowOp();
 		} else {
 			resultToken = new ValueToken(Double.parseDouble(token));
 		}
