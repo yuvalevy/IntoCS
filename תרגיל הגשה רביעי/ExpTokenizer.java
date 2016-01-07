@@ -50,8 +50,11 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 
 	@Override
 	public Object nextElement() {
+
 		CalcToken resultToken = null;
+
 		String token = nextToken();
+
 		if (token.equals("+")) {
 			resultToken = new AddOp();
 		} else if (token.equals("*")) {
@@ -63,7 +66,18 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 		} else if (token.equals("^")) {
 			resultToken = new PowOp();
 		} else {
-			resultToken = new ValueToken(Double.parseDouble(token));
+			try {
+				resultToken = new ValueToken(Double.parseDouble(token));
+
+			} catch (Exception e) {
+
+				if (Character.isDigit(token.charAt(0))) {
+					throw new ParseException("invalid number " + token);
+				} else {
+					throw new ParseException("invalid token " + token);
+				}
+
+			}
 		}
 
 		return resultToken;

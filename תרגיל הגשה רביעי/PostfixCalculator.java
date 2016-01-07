@@ -31,7 +31,10 @@ public class PostfixCalculator extends Calculator {
 																// object that
 																// is not null
 			if (token instanceof BinaryOp) { // means token is an operator
+				if (stack.size < 2) {
+					throw new ParseException("cannot perform operation " + token.toString());
 
+				}
 				double right = (double) stack.pop();
 				double left = (double) stack.pop();
 
@@ -45,6 +48,9 @@ public class PostfixCalculator extends Calculator {
 
 		}
 
+		if (stack.size != 1) {
+			throw new ParseException("invalid expression");
+		}
 		this.result = (double) stack.pop();
 	}
 
