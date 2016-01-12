@@ -1,8 +1,9 @@
 import java.util.Enumeration;
 
 /**
- * if direction is true, we will tokenize from left to right, if direction is
+ * If direction is true, we will tokenize from left to right, if direction is
  * false, then we will tokenize from right to left.
+ *
  */
 public class ExpTokenizer extends Object implements Enumeration<Object> {
 	// fields
@@ -10,13 +11,23 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 	private boolean direction;
 	private int index;
 
-	// constructor
+	/**
+	 * Default constructor.
+	 * Sets direction to be true
+	 * @param exp Given expression
+	 */
 	public ExpTokenizer(String exp) {
 		this.result = exp.split(" ");
 		this.direction = true;
 		this.index = 0;
 	}
 
+	/**
+	 * Builds a new ExpTokenizer.
+	 * Splits the given expression by ' '
+	 * @param exp Given expression
+	 * @param direction true for left to right, false otherwise 
+	 */
 	public ExpTokenizer(String exp, boolean direction) {
 		this.result = exp.split(" ");
 		this.direction = direction;
@@ -27,6 +38,10 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 		}
 	}
 
+	/**
+	 * 
+	 * @return the count of current tokens
+	 */
 	public int countTokens() {
 		if (this.direction) {
 			return (this.result.length - this.index);
@@ -35,6 +50,11 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 		}
 	}
 
+	/**
+	 * 
+	 * @return true if tokenizer has more elements, false otherwise
+
+	 */
 	@Override
 	public boolean hasMoreElements() {
 		if (this.direction) {
@@ -43,11 +63,21 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 			return (this.index >= 0);
 		}
 	}
-
+	/**
+	 * 
+	 * @return true if tokenizer has more tokens, false otherwise
+	 */
 	public boolean hasMoreTokens() {
 		return hasMoreElements();
 	}
 
+	
+	/**
+	 * 
+	 * @return the next element of the tokenize
+	 * 
+	 * @throws ParseException - if expression/number/token is invalid
+	 */
 	@Override
 	public Object nextElement() {
 
@@ -71,10 +101,14 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 
 			} catch (Exception e) {
 
-				if (Character.isDigit(token.charAt(0))) {
-					throw new ParseException("invalid number " + token);
+				if (token.length() > 0) {
+					if (Character.isDigit(token.charAt(0))) {
+						throw new ParseException("invalid number " + token);
+					} else {
+						throw new ParseException("invalid token " + token);
+					}
 				} else {
-					throw new ParseException("invalid token " + token);
+					throw new ParseException("invalid expression");
 				}
 
 			}
@@ -83,12 +117,16 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 		return resultToken;
 	}
 
+	/**
+	 * 
+	 * @return next token as a string
+	 */
 	public String nextToken() {
 		String ret;
 		if (this.direction) {
 			ret = this.result[this.index];
 			this.index++;
-		}
+	}
 
 		else {
 			ret = this.result[this.index];

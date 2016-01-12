@@ -1,6 +1,8 @@
 /**
- * This is a testing framework. Use it extensively to verify that your code is
- * working properly.
+ * 
+ * This class is a testing class for this project. 
+ * 
+ * @author Ram and Yuval
  */
 public class Tester {
 
@@ -18,6 +20,7 @@ public class Tester {
 		// Each function here should test a different class.
 		testValueToken();
 		testAddOp();
+		testSubtractOp();
 		testPowOp();
 		testDivideOp();
 		testMultiOp();
@@ -29,6 +32,23 @@ public class Tester {
 		if (testPassed) {
 			System.out.println("All " + testNum + " tests passed!");
 		}
+	}
+
+	/**
+	 * Checks the SubtractOp class.
+	 */
+	private static void testSubtractOp() {
+		SubtractOp so = new SubtractOp();
+
+		test(so.toString().equals("-"), "Operator toString should be -.");
+
+		test(so.operate(3, 2) == 1.0, "Result of 3-2 should be 1.5.");
+		test(so.operate(-3, 2) == -5.0, "Result of (-3)-2 should be -5.0.");
+		test(so.operate(-3, -2) == -1.0, "Result of (-3)-(-2) should be -1.0.");
+		test(so.operate(3.55, 2.35) == 3.55 - 2.35, "Result of 3.55-2.35 should be 1.2.");
+		test(so.operate(3.55, -2.35) == 5.9, "Result of 3.55-(-2.35) should be 5.9.");
+
+		
 	}
 
 	/**
@@ -50,6 +70,9 @@ public class Tester {
 		}
 	}
 
+	/**
+	 * Checks the AddOp class.
+	 */
 	private static void testAddOp() {
 
 		AddOp ao = new AddOp();
@@ -60,12 +83,13 @@ public class Tester {
 		test(ao.operate(-3, 2) == -1.0, "Result of (-3)+2 should be -1.0.");
 		test(ao.operate(-3, -2) == -5.0, "Result of (-3)+(-2) should be -5.0.");
 		test(ao.operate(3.55, 2.35) == 5.90, "Result of 3.55+2.35 should be 5.90.");
-		double operate = ao.operate(3.55, -2.35);
-		System.out.println(operate + "");
-		test(operate == 1.20, "Result of 3.55+(-2.35) should be 1.2.");
+		test(ao.operate(3.55, -2.35) == 3.55 - 2.35, "Result of 3.55+(-2.35) should be 1.2.");
 
 	}
 
+	/**
+	 * Checks the DivideOp class.
+	 */
 	private static void testDivideOp() {
 
 		DivideOp dio = new DivideOp();
@@ -80,11 +104,42 @@ public class Tester {
 
 	}
 
+	/**
+	 * Checks the ExpTokenizer class.
+	 */
 	private static void testExpTokenizer() {
-		// TODO Auto-generated method stub
+		ExpTokenizer et = new ExpTokenizer("1 + - * / ^ 3.5");
+		
+		test(et.nextElement() instanceof ValueToken, "should be ValueToken");
+		test(et.nextElement() instanceof AddOp, "should be AddOp");
+		test(et.nextElement() instanceof SubtractOp, "should be SubtractOp");
+		test(et.nextElement() instanceof MultiplyOp, "should be MultiplyOp");
+		test(et.nextElement() instanceof DivideOp, "should be DivideOp");
+		test(et.nextElement() instanceof PowOp, "should be PowOp");
+		test(et.nextElement() instanceof ValueToken, "should be ValueToken");
+		
+		et = new ExpTokenizer("$");
+		try {
+			et.nextElement();
+		} catch (Exception e) {
+			test(e instanceof ParseException, "error should be of type ParseException");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid token $"), "error should be 'SYNTAX ERROR: invalid token $'");
+		}
+		
+		et = new ExpTokenizer("1.1.1");
+		try {
+			et.nextElement();
+		} catch (Exception e) {
+			test(e instanceof ParseException, "error should be of type ParseException");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid number 1.1.1"), "error should be 'SYNTAX ERROR: invalid number 1.1.1'");
+		}
 
+		
 	}
 
+	/**
+	 * Checks the MultiplyOp class.
+	 */
 	private static void testMultiOp() {
 
 		MultiplyOp po = new MultiplyOp();
@@ -102,12 +157,47 @@ public class Tester {
 	 */
 	private static void testPostfixCalculator() {
 
-		/*
-		 * TODO Go for it! write your tests here for the PostfixCalculator
-		 * class!
-		 */
+		PostfixCalculator pc = new PostfixCalculator();
+		pc.evaluate("2 3 +");
+		test(pc.getCurrentResult() == 5.0, "Result '2 3 +' should eual 5.0");
+		pc.evaluate("3 5 -");
+		test(pc.getCurrentResult() == -2.0, "Result '3 5 -' should eual -2.0");
+		pc.evaluate("6 2 *");
+		test(pc.getCurrentResult() == 12.0, "Result '6 2 *' should eual 12.0");
+		pc.evaluate("10 4 /");
+		test(pc.getCurrentResult() == 2.5, "Result '10 4 /' should eual 2.5");
+		pc.evaluate("2 4 ^");
+		test(pc.getCurrentResult() == 16.0, "Result '2 4 ^' should eual 16.0");
+		pc.evaluate("2 3 + 4 2 - *");
+		test(pc.getCurrentResult() == 10.0, "Result '2 3 + 4 2 - *' should eual 10.0");
+		pc.evaluate("2 3 ^ 4 2 * / 7 -");
+		test(pc.getCurrentResult() == -6.0, "Result '2 3 ^ 4 2 * / 7 -' should eual -6.0");
+		
+		try {
+			pc.evaluate("1 2 3 4 5");
+		} catch (Exception e) {
+			test(e instanceof ParseException, "error should be of type ParseException");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"), "error should be 'SYNTAX ERROR: invalid expression'");
+		}
+		
+		try {
+			pc.evaluate("1 2 * ^");
+		} catch (Exception e) {
+			test(e instanceof ParseException, "error should be of type ParseException");
+			test(e.getMessage().equals("SYNTAX ERROR: cannot perform operation ^"), "error should be 'SYNTAX ERROR: cannot perform operation ^'");
+		}
+		
+		try {
+			pc.evaluate(" ");
+		} catch (Exception e) {
+			test(e instanceof ParseException, "error should be of type ParseException");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"), "error should be 'SYNTAX ERROR: invalid expression'");
+		}
 	}
 
+	/**
+	 * Checks the PowOp class.
+	 */
 	private static void testPowOp() {
 
 		PowOp po = new PowOp();

@@ -1,21 +1,19 @@
-import java.util.Scanner;
-
+/**
+ * The class represent a postfix type calculator
+ * 
+ * @author Ram and Yuval
+ *
+ */
 public class PostfixCalculator extends Calculator {
 
-	private double result;
-
-	public static void main(String[] args) {
-
-		Scanner in = new Scanner(System.in);
-
-		String exp = in.nextLine();
-
-		PostfixCalculator pf = new PostfixCalculator();
-		pf.evaluate(exp);
-		System.out.println(pf.getCurrentResult());
-		in.close();
-	}
-
+	/**
+	 * Calculates the expression and saves the result in superclass
+	 * 
+	 * @see Calculator#evaluate(java.lang.String)
+	 * @see Calculator#getCurrentResult()
+	 * 
+	 * @throws ParseException - if expression is invalid
+	 */
 	@Override
 	public void evaluate(String expr) {
 
@@ -35,8 +33,8 @@ public class PostfixCalculator extends Calculator {
 					throw new ParseException("cannot perform operation " + token.toString());
 
 				}
-				double right = (double) stack.pop();
-				double left = (double) stack.pop();
+				double right = (Double) stack.pop();
+				double left = (Double) stack.pop();
 
 				stack.push(((BinaryOp) token).operate(left, right));
 
@@ -51,12 +49,6 @@ public class PostfixCalculator extends Calculator {
 		if (stack.size != 1) {
 			throw new ParseException("invalid expression");
 		}
-		this.result = (double) stack.pop();
-	}
-
-	@Override
-	public double getCurrentResult() {
-
-		return this.result;
+		this.result = (Double) stack.pop();
 	}
 }
