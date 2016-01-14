@@ -13,7 +13,7 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 
 	/**
 	 * Default constructor. Sets direction to be true
-	 * 
+	 *
 	 * @param exp
 	 *            Given expression
 	 */
@@ -25,7 +25,7 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 
 	/**
 	 * Builds a new ExpTokenizer. Splits the given expression by ' '
-	 * 
+	 *
 	 * @param exp
 	 *            Given expression
 	 * @param direction
@@ -56,7 +56,7 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 	/**
 	 *
 	 * @return true if tokenizer has more elements, false otherwise
-	 * 
+	 *
 	 */
 	@Override
 	public boolean hasMoreElements() {
@@ -102,7 +102,6 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 		} else {
 			try {
 				resultToken = new ValueToken(Double.parseDouble(token));
-
 			} catch (Exception e) {
 
 				if (token.length() > 0) {

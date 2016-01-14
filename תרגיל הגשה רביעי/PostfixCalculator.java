@@ -1,18 +1,25 @@
 /**
  * The class represent a postfix type calculator
- * 
+ *
  * @author Ram and Yuval
  *
  */
 public class PostfixCalculator extends Calculator {
+	public static void main(String[] args) {
+		PostfixCalculator pc = new PostfixCalculator();
+		pc.evaluate("err");
+		System.out.println(pc.getCurrentResult());
+
+	}
 
 	/**
 	 * Calculates the expression and saves the result in superclass
-	 * 
+	 *
 	 * @see Calculator#evaluate(java.lang.String)
 	 * @see Calculator#getCurrentResult()
-	 * 
-	 * @throws ParseException - if expression is invalid
+	 *
+	 * @throws ParseException
+	 *             - if expression is invalid
 	 */
 	@Override
 	public void evaluate(String expr) {

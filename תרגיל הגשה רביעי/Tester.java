@@ -100,24 +100,32 @@ public class Tester {
 		test(et.nextElement() instanceof PowOp, "should be PowOp");
 		test(et.nextElement() instanceof ValueToken, "should be ValueToken");
 
+		boolean exc = false;
+
 		et = new ExpTokenizer("$");
 		try {
 			et.nextElement();
 		} catch (Exception e) {
+			exc = true;
 			test(e instanceof ParseException, "error should be of type ParseException");
 			test(e.getMessage().equals("SYNTAX ERROR: invalid token $"),
 					"error should be 'SYNTAX ERROR: invalid token $'");
 		}
 
+		test(exc, "Exception was suppose to be thrown for expression '$'");
+
+		exc = false;
 		et = new ExpTokenizer("1.1.1");
 		try {
 			et.nextElement();
 		} catch (Exception e) {
+			exc = true;
 			test(e instanceof ParseException, "error should be of type ParseException");
 			test(e.getMessage().equals("SYNTAX ERROR: invalid number 1.1.1"),
 					"error should be 'SYNTAX ERROR: invalid number 1.1.1'");
 		}
 
+		test(exc, "Exception was suppose to be thrown for expression '1.1.1'");
 	}
 
 	/**
@@ -156,29 +164,41 @@ public class Tester {
 		pc.evaluate("2 3 ^ 4 2 * / 7 -");
 		test(pc.getCurrentResult() == -6.0, "Result '2 3 ^ 4 2 * / 7 -' should eual -6.0");
 
+		boolean exc = false;
+
 		try {
 			pc.evaluate("1 2 3 4 5");
 		} catch (Exception e) {
+			exc = true;
 			test(e instanceof ParseException, "error should be of type ParseException");
 			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"),
 					"error should be 'SYNTAX ERROR: invalid expression'");
 		}
+		test(exc, "Exception was suppose to be thrown for expression '1 2 3 4 5'");
 
+		exc = false;
 		try {
 			pc.evaluate("1 2 * ^");
 		} catch (Exception e) {
+			exc = true;
 			test(e instanceof ParseException, "error should be of type ParseException");
 			test(e.getMessage().equals("SYNTAX ERROR: cannot perform operation ^"),
 					"error should be 'SYNTAX ERROR: cannot perform operation ^'");
 		}
+		test(exc, "Exception was suppose to be thrown for expression '1 2 * ^'");
 
+		exc = false;
 		try {
 			pc.evaluate(" ");
 		} catch (Exception e) {
+			exc = true;
 			test(e instanceof ParseException, "error should be of type ParseException");
 			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"),
 					"error should be 'SYNTAX ERROR: invalid expression'");
 		}
+
+		test(exc, "Exception was suppose to be thrown for expression ' '");
+
 	}
 
 	/**
