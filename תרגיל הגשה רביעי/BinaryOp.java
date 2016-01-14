@@ -5,7 +5,7 @@ public abstract class BinaryOp extends CalcToken {
 
 	/**
 	 * Return the result of this operation on its operands.
-	 * 
+	 *
 	 * @param left
 	 *            the left operand.
 	 * @param right

@@ -1,7 +1,6 @@
 /**
- * 
- * This class is a testing class for this project. 
- * 
+ * This class is a testing class for this project.
+ *
  * @author Ram and Yuval
  */
 public class Tester {
@@ -32,23 +31,6 @@ public class Tester {
 		if (testPassed) {
 			System.out.println("All " + testNum + " tests passed!");
 		}
-	}
-
-	/**
-	 * Checks the SubtractOp class.
-	 */
-	private static void testSubtractOp() {
-		SubtractOp so = new SubtractOp();
-
-		test(so.toString().equals("-"), "Operator toString should be -.");
-
-		test(so.operate(3, 2) == 1.0, "Result of 3-2 should be 1.5.");
-		test(so.operate(-3, 2) == -5.0, "Result of (-3)-2 should be -5.0.");
-		test(so.operate(-3, -2) == -1.0, "Result of (-3)-(-2) should be -1.0.");
-		test(so.operate(3.55, 2.35) == 3.55 - 2.35, "Result of 3.55-2.35 should be 1.2.");
-		test(so.operate(3.55, -2.35) == 5.9, "Result of 3.55-(-2.35) should be 5.9.");
-
-		
 	}
 
 	/**
@@ -83,7 +65,7 @@ public class Tester {
 		test(ao.operate(-3, 2) == -1.0, "Result of (-3)+2 should be -1.0.");
 		test(ao.operate(-3, -2) == -5.0, "Result of (-3)+(-2) should be -5.0.");
 		test(ao.operate(3.55, 2.35) == 5.90, "Result of 3.55+2.35 should be 5.90.");
-		test(ao.operate(3.55, -2.35) == 3.55 - 2.35, "Result of 3.55+(-2.35) should be 1.2.");
+		test(ao.operate(3.55, -2.35) == (3.55 - 2.35), "Result of 3.55+(-2.35) should be 1.2.");
 
 	}
 
@@ -109,7 +91,7 @@ public class Tester {
 	 */
 	private static void testExpTokenizer() {
 		ExpTokenizer et = new ExpTokenizer("1 + - * / ^ 3.5");
-		
+
 		test(et.nextElement() instanceof ValueToken, "should be ValueToken");
 		test(et.nextElement() instanceof AddOp, "should be AddOp");
 		test(et.nextElement() instanceof SubtractOp, "should be SubtractOp");
@@ -117,24 +99,25 @@ public class Tester {
 		test(et.nextElement() instanceof DivideOp, "should be DivideOp");
 		test(et.nextElement() instanceof PowOp, "should be PowOp");
 		test(et.nextElement() instanceof ValueToken, "should be ValueToken");
-		
+
 		et = new ExpTokenizer("$");
 		try {
 			et.nextElement();
 		} catch (Exception e) {
 			test(e instanceof ParseException, "error should be of type ParseException");
-			test(e.getMessage().equals("SYNTAX ERROR: invalid token $"), "error should be 'SYNTAX ERROR: invalid token $'");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid token $"),
+					"error should be 'SYNTAX ERROR: invalid token $'");
 		}
-		
+
 		et = new ExpTokenizer("1.1.1");
 		try {
 			et.nextElement();
 		} catch (Exception e) {
 			test(e instanceof ParseException, "error should be of type ParseException");
-			test(e.getMessage().equals("SYNTAX ERROR: invalid number 1.1.1"), "error should be 'SYNTAX ERROR: invalid number 1.1.1'");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid number 1.1.1"),
+					"error should be 'SYNTAX ERROR: invalid number 1.1.1'");
 		}
 
-		
 	}
 
 	/**
@@ -172,26 +155,29 @@ public class Tester {
 		test(pc.getCurrentResult() == 10.0, "Result '2 3 + 4 2 - *' should eual 10.0");
 		pc.evaluate("2 3 ^ 4 2 * / 7 -");
 		test(pc.getCurrentResult() == -6.0, "Result '2 3 ^ 4 2 * / 7 -' should eual -6.0");
-		
+
 		try {
 			pc.evaluate("1 2 3 4 5");
 		} catch (Exception e) {
 			test(e instanceof ParseException, "error should be of type ParseException");
-			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"), "error should be 'SYNTAX ERROR: invalid expression'");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"),
+					"error should be 'SYNTAX ERROR: invalid expression'");
 		}
-		
+
 		try {
 			pc.evaluate("1 2 * ^");
 		} catch (Exception e) {
 			test(e instanceof ParseException, "error should be of type ParseException");
-			test(e.getMessage().equals("SYNTAX ERROR: cannot perform operation ^"), "error should be 'SYNTAX ERROR: cannot perform operation ^'");
+			test(e.getMessage().equals("SYNTAX ERROR: cannot perform operation ^"),
+					"error should be 'SYNTAX ERROR: cannot perform operation ^'");
 		}
-		
+
 		try {
 			pc.evaluate(" ");
 		} catch (Exception e) {
 			test(e instanceof ParseException, "error should be of type ParseException");
-			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"), "error should be 'SYNTAX ERROR: invalid expression'");
+			test(e.getMessage().equals("SYNTAX ERROR: invalid expression"),
+					"error should be 'SYNTAX ERROR: invalid expression'");
 		}
 	}
 
@@ -212,6 +198,22 @@ public class Tester {
 		test(po.operate(2, -2) == 0.25, "Result of 2^(-2) should be 0.25.");
 		test(po.operate(4, 0.5) == 2.0, "Result of 4^(0.5) should be 2.");
 		test(po.operate(4, -0.5) == 0.5, "Result of 4^(-0.5) should be 0.5.");
+
+	}
+
+	/**
+	 * Checks the SubtractOp class.
+	 */
+	private static void testSubtractOp() {
+		SubtractOp so = new SubtractOp();
+
+		test(so.toString().equals("-"), "Operator toString should be -.");
+
+		test(so.operate(3, 2) == 1.0, "Result of 3-2 should be 1.5.");
+		test(so.operate(-3, 2) == -5.0, "Result of (-3)-2 should be -5.0.");
+		test(so.operate(-3, -2) == -1.0, "Result of (-3)-(-2) should be -1.0.");
+		test(so.operate(3.55, 2.35) == (3.55 - 2.35), "Result of 3.55-2.35 should be 1.2.");
+		test(so.operate(3.55, -2.35) == 5.9, "Result of 3.55-(-2.35) should be 5.9.");
 
 	}
 

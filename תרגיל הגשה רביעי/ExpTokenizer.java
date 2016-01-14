@@ -12,9 +12,10 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 	private int index;
 
 	/**
-	 * Default constructor.
-	 * Sets direction to be true
-	 * @param exp Given expression
+	 * Default constructor. Sets direction to be true
+	 * 
+	 * @param exp
+	 *            Given expression
 	 */
 	public ExpTokenizer(String exp) {
 		this.result = exp.split(" ");
@@ -23,10 +24,12 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 	}
 
 	/**
-	 * Builds a new ExpTokenizer.
-	 * Splits the given expression by ' '
-	 * @param exp Given expression
-	 * @param direction true for left to right, false otherwise 
+	 * Builds a new ExpTokenizer. Splits the given expression by ' '
+	 * 
+	 * @param exp
+	 *            Given expression
+	 * @param direction
+	 *            true for left to right, false otherwise
 	 */
 	public ExpTokenizer(String exp, boolean direction) {
 		this.result = exp.split(" ");
@@ -39,7 +42,7 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the count of current tokens
 	 */
 	public int countTokens() {
@@ -51,9 +54,9 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return true if tokenizer has more elements, false otherwise
-
+	 * 
 	 */
 	@Override
 	public boolean hasMoreElements() {
@@ -63,20 +66,21 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 			return (this.index >= 0);
 		}
 	}
+
 	/**
-	 * 
+	 *
 	 * @return true if tokenizer has more tokens, false otherwise
 	 */
 	public boolean hasMoreTokens() {
 		return hasMoreElements();
 	}
 
-	
 	/**
-	 * 
+	 *
 	 * @return the next element of the tokenize
-	 * 
-	 * @throws ParseException - if expression/number/token is invalid
+	 *
+	 * @throws ParseException
+	 *             - if expression/number/token is invalid
 	 */
 	@Override
 	public Object nextElement() {
@@ -118,7 +122,7 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return next token as a string
 	 */
 	public String nextToken() {
@@ -126,7 +130,7 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 		if (this.direction) {
 			ret = this.result[this.index];
 			this.index++;
-	}
+		}
 
 		else {
 			ret = this.result[this.index];
@@ -134,5 +138,4 @@ public class ExpTokenizer extends Object implements Enumeration<Object> {
 		}
 		return ret;
 	}
-
 }
